@@ -1,0 +1,21 @@
+<a
+  *ngIf="link; else actionButton"
+  [routerLink]="link"
+  class="button"
+  [ngStyle]="{ '--button-color': color, '--active-color': activeColor }"
+>
+  <img [src]="icon" alt="иконка" class="button__icon" />
+  <span class="button__label">{{ label }}</span>
+</a>
+
+<ng-template #actionButton>
+  <button
+    type="button"
+    class="button"
+    [ngStyle]="{ '--button-color': color, '--active-color': activeColor }"
+    (click)="onClick.emit()"
+  >
+    <img [src]="icon" alt="иконка" class="button__icon" />
+    <span class="button__label">{{ label }}</span>
+  </button>
+</ng-template>

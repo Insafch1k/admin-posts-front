@@ -1,0 +1,41 @@
+.filter-tema {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-tema__list {
+  .filter-tema__item {
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.style-title {
+  margin-top: 20px;
+}
+
+.style-text {
+  min-height: 120px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.tag {
+  margin: 0 5px;
+}
+
+.bottom {
+  margin-bottom: 60px;
+}
+
+.container-style {
+  min-height: 20px;
+}

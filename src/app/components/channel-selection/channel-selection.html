@@ -1,0 +1,17 @@
+<h2>Канал</h2>
+<div
+  [ngClass]="{
+  'few-avatars': channels.length <= 4,
+  'many-avatars': channels.length > 4
+}"
+>
+  <div
+    class="avatar-item"
+    *ngFor="let channel of channels"
+    [class.selected]="channel.id === channelSelectedId"
+    (click)="selectChannel(channel.id)"
+  >
+    <img [src]="channel.avatarUrl" alt="Автарка канала" />
+    <div class="channel-name">{{ channel.name }}</div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<app-title>Мои источники</app-title>
+<div class="source-list">
+  <app-description *ngFor="let source of sources">
+    <div class="sources-item">
+      <img
+        [src]="getFaviconUrl(source.url)"
+        alt="Иконка сайта"
+        class="sources-item__img"
+      />
+      <div class="site-description">
+        <h2>{{ source.name }}</h2>
+        <p class="site-description__text">{{ source.type }}</p>
+      </div>
+      <img src="../../../assets/icons/arrows/arrow-down.svg" alt="стрелка" />
+    </div>
+  </app-description>
+</div>
+<app-button
+  color=""
+  activeColor=""
+  link="/new-source"
+  icon="../../../assets/icons/arrows/Plus.svg"
+  [label]="'Новый источник'"
+>
+</app-button>

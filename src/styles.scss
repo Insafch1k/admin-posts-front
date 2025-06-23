@@ -1,0 +1,44 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  scrollbar-width: none;
+}
+
+h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+p {
+  margin: 0;
+  font-size: 12px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+textarea {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: calc(100% - 10px);
+  font-size: 14px;
+  color: inherit;
+  resize: none;
+  font-family: 'Roboto', sans-serif;
+  padding-right: 10px;
+}
+
+input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}

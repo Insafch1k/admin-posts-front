@@ -1,0 +1,87 @@
+<app-title>Стиль</app-title>
+<app-channel-selection
+  [channels]="channels"
+  (channelSelected)="onChannelSelected($event)"
+></app-channel-selection>
+<h2>Тематика</h2>
+<app-description
+  (clicked)="toggleTema()"
+  [borderRadius]="'15px'"
+  [marginBottom]="'10px'"
+>
+  <div class="container-style">
+    <div class="filter-tema" *ngIf="selectedChannelStyle">
+      <h2>{{ selectedChannelStyle.topic }}</h2>
+      <img
+        [src]="showTema ? '../../../assets/icons/arrows/arrow-up.svg' : '../../../assets/icons/arrows/arrow-down.svg'"
+        alt="стрелка вниз"
+      />
+    </div>
+  </div>
+</app-description>
+<app-description *ngIf="showTema" [borderRadius]="'15px'">
+  <ul class="filter-tema__list">
+    <li
+      class="filter-tema__item"
+      *ngFor="let tema of themes"
+      (click)="selectTema(tema)"
+    >
+      {{ tema }}
+    </li>
+  </ul>
+</app-description>
+<h2 class="style-title">Стилистика</h2>
+<app-description [borderRadius]="'15px'">
+  <div class="container-style">
+    <textarea
+      class="style-text"
+      *ngIf="selectedChannelStyle"
+      [(ngModel)]="selectedChannelStyle.styleTetx"
+      placeholder="Введите текст стиля..."
+    >
+    </textarea>
+  </div>
+</app-description>
+<h2 class="style-title">Ключевые слова</h2>
+<app-description [borderRadius]="'15px'" [marginBottom]="'0'">
+  <div class="filter-tema">
+    <input
+      [(ngModel)]="keyword"
+      placeholder="Введите ключевое слово"
+      type="text"
+      (keydown.enter)="addKeyword()"
+    />
+    <img
+      src="../../../assets/icons/arrows/Plus.svg"
+      alt="иконка плюса"
+      (click)="addKeyword()"
+    />
+  </div>
+</app-description>
+<ul class="tags">
+  <li class="tag" *ngFor="let tag of selectedChannelStyle?.keyWords">
+    <app-description
+      [borderRadius]="'10px'"
+      [minWidth]="'fit-content'"
+      [padding]="'5px 10px'"
+      [marginBottom]="'0'"
+    >
+      <div class="filter-tema">
+        <p>{{ tag }}</p>
+        <img
+          src="../../../assets/icons/arrows/close.svg"
+          alt="иконка закрыть"
+          (click)="deleteKeyword(tag)"
+        />
+      </div>
+    </app-description>
+  </li>
+</ul>
+<app-button
+  [link]="null"
+  icon="../../../assets/icons/arrows/check-mark.svg"
+  (onClick)="saveData()"
+  [label]="'Сохранить'"
+>
+</app-button>
+<div class="bottom"></div>

@@ -1,0 +1,16 @@
+<nav class="bottom-nav">
+  <a
+    *ngFor="let link of navLinks"
+    [routerLink]="link.path"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    class="nav-item"
+  >
+    <img
+      [src]="isActive(link.path) ? link.iconActive : link.icon"
+      alt="{{ link.label }} иконка"
+      class="icon"
+    />
+    <div class="label">{{ link.label }}</div>
+  </a>
+</nav>
