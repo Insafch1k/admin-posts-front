@@ -3,3 +3,51 @@
   [channels]="channels"
   (channelSelected)="onChannelSelected($event)"
 ></app-channel-selection>
+<div class="week">
+  <div class="week__title">
+    <button (click)="weekAge()" class="week__button">
+      <img
+        src="../../../assets/icons/arrows/arrow-left.svg"
+        alt="Прошлая неделя"
+      />
+    </button>
+    <h2>{{ weekLabel }}</h2>
+    <button (click)="weekAhead()" class="week__button">
+      <img
+        src="../../../assets/icons/arrows/arrow-right.svg"
+        alt="Следующая неделя"
+      />
+    </button>
+  </div>
+  <ul class="week__list">
+    <app-description
+      *ngFor="let day of weekday"
+      [borderRadius]="'10px'"
+      [padding]="'7px'"
+      [minWidth]="'fit-content'"
+    >
+      <li class="week__item">
+        <h2>{{ day.name }}</h2>
+        <p class="week__text">{{ day.date }}</p>
+      </li>
+    </app-description>
+  </ul>
+</div>
+<div class="post">
+  <ul class="post__list">
+    <app-description *ngFor="let post of selectedChannelSchedule?.posts">
+      <li class="post__item">
+        <h2>{{post.name}}</h2>
+        <p class="week__text">{{post.time}}</p>
+        <img src="../../../assets/icons/arrows/arrow-right.svg" alt="" />
+      </li>
+    </app-description>
+  </ul>
+</div>
+<app-button
+  color=""
+  activeColor=""
+  link="/new-source"
+  icon="../../../assets/icons/arrows/Plus.svg"
+  [label]="'Новое расписание'"
+></app-button>

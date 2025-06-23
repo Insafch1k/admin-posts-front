@@ -17,8 +17,20 @@ export interface Post {
   time: string;
 }
 
+export interface Weekday {
+  name: string;
+  date: string;
+  fullDate: string;
+}
+
+export interface ChannelPost {
+  name: string;
+  time: string;
+  date: string;
+}
+
 export interface ChannelSchedule {
-  data: string;
-  posts: Post[];
-  duplicate: boolean;
+  posts: ChannelPost[];
+  duplication: boolean;
+  random: boolean;
 }

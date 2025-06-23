@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, of } from 'rxjs';
-import { Channel, ChannelStyle } from '../models/channel.modul';
+import {
+  Channel,
+  ChannelSchedule,
+  ChannelStyle,
+} from '../models/channel.modul';
 import { API } from '../constants/api.constants';
 
 @Injectable({
@@ -13,6 +17,10 @@ export class ChannelService {
   private stylesSubject = new BehaviorSubject<{ [key: number]: ChannelStyle }>(
     {}
   );
+  private scheduleById: { [key: number]: ChannelSchedule } = {};
+  private scheduleSubject = new BehaviorSubject<{
+    [key: number]: ChannelSchedule;
+  }>({});
 
   constructor(private http: HttpClient) {
     this.loadChannels();
@@ -45,17 +53,17 @@ export class ChannelService {
       name: 'Tech News',
       avatarUrl: '../../../assets/mock/avatar1.jpg',
     },
-    {
-      id: 6,
-      name: 'Family First',
-      avatarUrl: '../../../assets/mock/avatar1.jpg',
-    },
-    {
-      id: 7,
-      name: 'Tech News',
-      avatarUrl: '../../../assets/mock/avatar1.jpg',
-    },
   ];
+
+  private mockChannelSchedule: ChannelSchedule = {
+    posts: [
+      { name: '1 пост', time: '10:00', date: '02.06' },
+      { name: '2 пост', time: '11:00', date: '02.06' },
+      { name: '3 пост', time: '12:00', date: '02.06' },
+    ],
+    duplication: true,
+    random: false,
+  };
 
   private loadChannels() {
     setTimeout(() => {
@@ -65,10 +73,7 @@ export class ChannelService {
     //   this.channelsSubject.next(data);
     // });
     this.loadAllChannelStyles();
-  }
-
-  getChannels(): Observable<Channel[]> {
-    return this.channelsSubject.asObservable();
+    this.loadAllChannelSchedules();
   }
 
   loadAllChannelStyles(): void {
@@ -92,8 +97,39 @@ export class ChannelService {
     //   });
   }
 
+  loadAllChannelSchedules() {
+    this.getChannels().subscribe((channels) => {
+      channels.forEach((channel) => {
+        this.loadChannelSchedule(channel.id);
+      });
+    });
+  }
+
+  loadChannelSchedule(id: number) {
+    setTimeout(() => {
+      this.scheduleById[id] = this.mockChannelSchedule;
+      this.scheduleSubject.next(this.scheduleById);
+    }, 1500);
+    // this.http
+    //   .get<ChannelSchedule>(API.CHANNELSTYLE.GET_CHANNEL_STYLE(id))
+    //   .subscribe((schedule) => {
+    //     this.scheduleById[id] = schedule;
+    //     this.scheduleSubject.next(this.scheduleById);
+    //   });
+  }
+
+  getChannels(): Observable<Channel[]> {
+    return this.channelsSubject.asObservable();
+  }
+
   getChannelStyle(id: number): Observable<ChannelStyle | undefined> {
     return this.stylesSubject.asObservable().pipe(map((styles) => styles[id]));
+  }
+
+  getChannelSchedule(id: number): Observable<ChannelSchedule | undefined> {
+    return this.scheduleSubject
+      .asObservable()
+      .pipe(map((schedules) => schedules[id]));
   }
 
   updateChannelStyle(style: ChannelStyle, channelId: number) {

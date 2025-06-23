@@ -4,6 +4,7 @@ import { MySources } from './pages/my-sources/my-sources';
 import { Filter } from './pages/filter/filter';
 import { Schedule } from './pages/schedule/schedule';
 import { NewSource } from './pages/new-source/new-source';
+import { NewSchedule } from './pages/new-schedule/new-schedule';
 
 export const routes: Routes = [
   {
@@ -25,5 +26,9 @@ export const routes: Routes = [
   {
     path: 'schedule',
     component: Schedule,
+  },
+  {
+    path: 'new-schedule',
+    component: NewSchedule,
   },
 ];
