@@ -14,6 +14,7 @@ export class Description {
   @Input() marginBottom: string = '20px';
   @Input() minWidth: string = 'calc(100% - 20px)';
   @Input() padding: string = '10px';
+  @Input() isActive: boolean = false;
 
   @Output() clicked = new EventEmitter<void>();
 

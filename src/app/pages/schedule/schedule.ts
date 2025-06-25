@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '../../components/title/title';
 import { ChannelSelection } from '../../components/channel-selection/channel-selection';
-import { Channel, ChannelSchedule, Weekday } from '../../models/channel.modul';
+import { Channel, ChannelSchedule, Weekday } from '../../models/channel.model';
 import { ChannelService } from '../../services/channel.service';
 import { CommonModule } from '@angular/common';
 import { Description } from '../../components/description/description';
@@ -16,10 +16,11 @@ import { Button } from '../../components/button/button';
 export class Schedule implements OnInit {
   channels: Channel[] = [];
   selectedChannelId: number | null = null;
+  selectedChannelSchedule: ChannelSchedule | null = null;
+  selectedDay: string | null = null;
   currentDate = new Date();
   weekLabel = '';
   weekday: Weekday[] = [];
-  selectedChannelSchedule: ChannelSchedule | null = null;
 
   constructor(private channelService: ChannelService) {}
 
@@ -28,6 +29,13 @@ export class Schedule implements OnInit {
       this.channels = data;
     });
     this.updateWeek();
+
+    const today = new Date();
+    const todayStr =
+      today.getDate().toString().padStart(2, '0') +
+      '.' +
+      (today.getMonth() + 1).toString().padStart(2, '0');
+    this.selectedDay = todayStr;
   }
 
   onChannelSelected(channelId: number) {
@@ -77,5 +85,11 @@ export class Schedule implements OnInit {
     const monday = new Date(date);
     monday.setDate(date.getDate() - diff);
     return monday;
+  }
+
+  toogleDay(day: Weekday) {
+    if (this.selectedDay !== day.fullDate) {
+      this.selectedDay = day.fullDate;
+    }
   }
 }

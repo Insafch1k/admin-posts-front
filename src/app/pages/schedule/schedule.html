@@ -25,6 +25,8 @@
       [borderRadius]="'10px'"
       [padding]="'7px'"
       [minWidth]="'fit-content'"
+      [isActive]="selectedDay === day.fullDate"
+      (clicked)="toogleDay(day)"
     >
       <li class="week__item">
         <h2>{{ day.name }}</h2>

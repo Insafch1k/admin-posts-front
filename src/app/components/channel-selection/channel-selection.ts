@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Channel } from '../../models/channel.modul';
+import { Channel } from '../../models/channel.model';
 import { CommonModule } from '@angular/common';
 
 @Component({

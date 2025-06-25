@@ -33,3 +33,8 @@
     align-items: center;
   }
 }
+
+::ng-deep app-description.active-day {
+  border-radius: 10px;
+  border: 2px solid white;
+}

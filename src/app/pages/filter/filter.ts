@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '../../components/title/title';
 import { ChannelSelection } from '../../components/channel-selection/channel-selection';
-import { Channel, ChannelStyle } from '../../models/channel.modul';
+import { Channel, ChannelStyle } from '../../models/channel.model';
 import { ChannelService } from '../../services/channel.service';
 import { Description } from '../../components/description/description';
 import { CommonModule } from '@angular/common';

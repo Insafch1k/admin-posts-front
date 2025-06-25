@@ -5,7 +5,7 @@ import {
   Channel,
   ChannelSchedule,
   ChannelStyle,
-} from '../models/channel.modul';
+} from '../models/channel.model';
 import { API } from '../constants/api.constants';
 
 @Injectable({
