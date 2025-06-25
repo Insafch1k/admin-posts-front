@@ -8,8 +8,10 @@
 
   font-size: 16px;
   font-weight: 400;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
 
   &__active {
     border-color: white;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
   }
 }

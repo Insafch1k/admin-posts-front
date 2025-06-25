@@ -57,9 +57,9 @@ export class ChannelService {
 
   private mockChannelSchedule: ChannelSchedule = {
     posts: [
-      { name: '1 пост', time: '10:00', date: '02.06' },
-      { name: '2 пост', time: '11:00', date: '02.06' },
-      { name: '3 пост', time: '12:00', date: '02.06' },
+      { name: '1 пост', time: '10:00', date: '25.06' },
+      { name: '2 пост', time: '11:00', date: '25.06' },
+      { name: '3 пост', time: '12:00', date: '26.06' },
     ],
     duplication: true,
     random: false,

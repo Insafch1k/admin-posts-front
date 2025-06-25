@@ -1,1 +1,24 @@
-<p>new-schedule works!</p>
+<app-title>Расписание постов</app-title>
+<h2>Название</h2>
+<app-description>
+  <input
+    [(ngModel)]="namePost"
+    placeholder="Введите название поста"
+    type="text"
+/></app-description>
+<div class="buttons">
+  <app-button
+    [link]="null"
+    icon="../../../assets/icons/arrows/check-mark.svg"
+    (onClick)="savePost()"
+    [label]="'Сохранить'"
+  ></app-button>
+  <app-button
+    color="#FF2A69"
+    activeColor="#E10C4B"
+    [link]="null"
+    icon="../../../assets/icons/arrows/urn.svg"
+    (onClick)="deletePost()"
+    [label]="'Удалить расписание'"
+  ></app-button>
+</div>

@@ -26,7 +26,8 @@
       [padding]="'7px'"
       [minWidth]="'fit-content'"
       [isActive]="selectedDay === day.fullDate"
-      (clicked)="toogleDay(day)"
+      (clicked)="toogleDay(day.fullDate)"
+      [marginBottom]="'10px'"
     >
       <li class="week__item">
         <h2>{{ day.name }}</h2>
@@ -37,10 +38,13 @@
 </div>
 <div class="post">
   <ul class="post__list">
-    <app-description *ngFor="let post of selectedChannelSchedule?.posts">
+    <app-description
+      *ngFor="let post of selectedPostsDay"
+      [borderRadius]="'15px'"
+    >
       <li class="post__item">
         <h2>{{post.name}}</h2>
-        <p class="week__text">{{post.time}}</p>
+        <p class="post__time">{{post.time}}</p>
         <img src="../../../assets/icons/arrows/arrow-right.svg" alt="" />
       </li>
     </app-description>
@@ -49,7 +53,7 @@
 <app-button
   color=""
   activeColor=""
-  link="/new-source"
+  link="/new-schedule"
   icon="../../../assets/icons/arrows/Plus.svg"
   [label]="'Новое расписание'"
 ></app-button>

@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '../../components/title/title';
 import { ChannelSelection } from '../../components/channel-selection/channel-selection';
-import { Channel, ChannelSchedule, Weekday } from '../../models/channel.model';
+import {
+  Channel,
+  ChannelPost,
+  ChannelSchedule,
+  Weekday,
+} from '../../models/channel.model';
 import { ChannelService } from '../../services/channel.service';
 import { CommonModule } from '@angular/common';
 import { Description } from '../../components/description/description';
@@ -18,6 +23,7 @@ export class Schedule implements OnInit {
   selectedChannelId: number | null = null;
   selectedChannelSchedule: ChannelSchedule | null = null;
   selectedDay: string | null = null;
+  selectedPostsDay: ChannelPost[] | null = null;
   currentDate = new Date();
   weekLabel = '';
   weekday: Weekday[] = [];
@@ -42,6 +48,9 @@ export class Schedule implements OnInit {
     this.selectedChannelId = channelId;
     this.channelService.getChannelSchedule(channelId).subscribe((schedule) => {
       this.selectedChannelSchedule = schedule || null;
+      if (this.selectedDay) {
+        this.toogleDay(this.selectedDay);
+      }
     });
   }
 
@@ -87,9 +96,20 @@ export class Schedule implements OnInit {
     return monday;
   }
 
-  toogleDay(day: Weekday) {
-    if (this.selectedDay !== day.fullDate) {
-      this.selectedDay = day.fullDate;
+  toogleDay(day: string) {
+    if (this.selectedDay !== day) {
+      this.selectedDay = day;
     }
+
+    if (!this.selectedChannelSchedule?.posts) {
+      this.selectedPostsDay = null;
+      return;
+    }
+
+    this.selectedPostsDay = this.selectedChannelSchedule.posts.filter(
+      (post) => {
+        return post.date === day;
+      }
+    );
   }
 }
