@@ -3,6 +3,7 @@ import { Title } from '../../components/title/title';
 import { Description } from '../../components/description/description';
 import { FormsModule } from '@angular/forms';
 import { Button } from '../../components/button/button';
+import { ChannelService } from '../../services/channel.service';
 
 @Component({
   selector: 'app-new-schedule',
@@ -13,7 +14,14 @@ import { Button } from '../../components/button/button';
 export class NewSchedule {
   namePost: string | null = null;
 
-  savePost() {}
+  hourPost: string = '10';
+  minutePost: string = '20';
+
+  constructor(private channelService: ChannelService) {}
+
+  savePost() {
+    console.log(this.hourPost);
+  }
 
   deletePost() {}
 }
