@@ -1,13 +1,50 @@
 <app-title>Расписание постов</app-title>
-<h2>Название</h2>
+<h2>Название поста</h2>
 <app-description>
   <input
     [(ngModel)]="namePost"
     placeholder="Введите название поста"
     type="text"
 /></app-description>
-<input [(ngModel)]="hourPost" type="text" />
-<input [(ngModel)]="minutePost" type="text" />
+
+<div class="scroll-picker">
+  <div class="wheel-wrapper">
+    <div class="highlight-box"></div>
+    <div class="column" id="hour-column" (scroll)="onScroll($event, 'hour')">
+      <div class="spacer"></div>
+      <div
+        *ngFor="let hour of hours; let i = index"
+        class="item"
+        [class.selected]="i === selectedHourIndex"
+      >
+        {{ hour }}
+      </div>
+      <div class="spacer"></div>
+    </div>
+  </div>
+
+  <div class="separator">:</div>
+
+  <div class="wheel-wrapper">
+    <div class="highlight-box"></div>
+    <div
+      id="minute-column"
+      class="column"
+      (scroll)="onScroll($event, 'minute')"
+    >
+      <div class="spacer"></div>
+      <div
+        *ngFor="let minute of minutes; let i = index"
+        class="item"
+        [class.selected]="i === selectedMinuteIndex"
+      >
+        {{ minute }}
+      </div>
+      <div class="spacer"></div>
+    </div>
+  </div>
+</div>
+
 <div class="buttons">
   <app-button
     [link]="null"
