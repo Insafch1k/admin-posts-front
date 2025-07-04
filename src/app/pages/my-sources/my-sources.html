@@ -1,25 +1,92 @@
 <app-title>Мои источники</app-title>
-<div class="source-list">
-  <app-description *ngFor="let source of sources">
-    <div class="sources-item">
-      <img
-        [src]="getFaviconUrl(source.url)"
-        alt="Иконка сайта"
-        class="sources-item__img"
-      />
+<app-channel-selection
+  [channels]="channels"
+  (channelSelected)="onChannelSelected($event)"
+></app-channel-selection>
+<div
+  class="source-list"
+  *ngFor="let source of selectedChannelSources; let i = index"
+>
+  <div class="description description__title">
+    <div class="sources-item" (click)="onToggleEditor(i)">
+      <img [src]="source.photo" alt="Иконка сайта" class="sources-item__img" />
       <div class="site-description">
         <h2>{{ source.name }}</h2>
-        <p class="site-description__text">{{ source.type }}</p>
+        <p class="site-description__text">{{ source.link }}</p>
       </div>
-      <img src="../../../assets/icons/arrows/arrow-down.svg" alt="стрелка" />
+      <img
+        [src]="openedEditorIndex === i
+    ? '../../../assets/icons/arrows/arrow-up.svg'
+    : '../../../assets/icons/arrows/arrow-down.svg'"
+        alt="стрелка"
+        alt="стрелка"
+        style="cursor: pointer"
+      />
     </div>
-  </app-description>
+  </div>
+  <div class="description description__text" *ngIf="openedEditorIndex === i">
+    <div class="sources-edit" *ngIf="editedSource">
+      <h2 class="sources-edit__title">Название</h2>
+      <input
+        [(ngModel)]="editedSource.name"
+        placeholder="Название"
+        class="input"
+      />
+      <h2 class="sources-edit__title sources-edit__title2">
+        Ссылка на источник
+      </h2>
+      <input
+        [(ngModel)]="editedSource.link"
+        placeholder="Ссылка"
+        class="input"
+      />
+    </div>
+    <div class="buttons">
+      <app-button
+        color=""
+        activeColor=""
+        icon="../../../assets/icons/arrows/check-mark.svg"
+        [label]="'Сохранить'"
+        (onClick)="saveSource()"
+      ></app-button>
+      <app-button
+        color="#FF2A69"
+        activeColor="#E10C4B"
+        icon="../../../assets/icons/arrows/urn.svg"
+        [label]="'Удалить'"
+        (onClick)="deleteSource(i)"
+      ></app-button>
+    </div>
+  </div>
 </div>
+
 <app-button
   color=""
   activeColor=""
-  link="/new-source"
   icon="../../../assets/icons/arrows/Plus.svg"
   [label]="'Новый источник'"
+  (onClick)="showNewSourceForm()"
+  *ngIf="!isAddingNewSource"
 >
 </app-button>
+<div *ngIf="isAddingNewSource">
+  <app-title class="new-source-form__title">Новый источник</app-title>
+  <div class="description description__text botton">
+    <h2 class="sources-edit__title">Ссылка на источник</h2>
+    <input
+      [(ngModel)]="newSource.link"
+      placeholder="https://example.com"
+      class="input"
+    />
+
+    <div class="new-source-form__buttons">
+      <app-button
+        color=""
+        activeColor=""
+        icon="../../../assets/icons/arrows/check-mark.svg"
+        [label]="'Добавить источник'"
+        (onClick)="addNewSource()"
+      ></app-button>
+    </div>
+  </div>
+</div>

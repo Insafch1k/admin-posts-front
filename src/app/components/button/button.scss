@@ -1,6 +1,6 @@
 .button {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   padding: 10px 0;
   background-color: var(--button-color, #40bfc9);
   text-decoration: none;
@@ -18,8 +18,12 @@
     background-color: var(--active-color, #22a1ab);
   }
 
+  &__icon {
+    padding-left: 7px;
+  }
+
   &__label {
     font-size: 16px;
-    padding-right: 15px;
+    padding-right: 7px;
   }
 }

@@ -52,6 +52,7 @@ export class Schedule implements OnInit {
         this.toogleDay(this.selectedDay);
       }
     });
+    console.log(this.selectedChannelSchedule);
   }
 
   weekAge() {

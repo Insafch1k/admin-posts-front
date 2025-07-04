@@ -3,8 +3,10 @@ import { Home } from './pages/home/home';
 import { MySources } from './pages/my-sources/my-sources';
 import { Filter } from './pages/filter/filter';
 import { Schedule } from './pages/schedule/schedule';
-import { NewSource } from './pages/new-source/new-source';
 import { NewSchedule } from './pages/new-schedule/new-schedule';
+import { Channels } from './pages/channels/channels';
+import { Posts } from './pages/posts/posts';
+import { Subscription } from './pages/subscription/subscription';
 
 export const routes: Routes = [
   {
@@ -14,10 +16,6 @@ export const routes: Routes = [
   {
     path: 'my-sources',
     component: MySources,
-  },
-  {
-    path: 'new-source',
-    component: NewSource,
   },
   {
     path: 'filter',
@@ -30,5 +28,17 @@ export const routes: Routes = [
   {
     path: 'new-schedule',
     component: NewSchedule,
+  },
+  {
+    path: 'channels',
+    component: Channels,
+  },
+  {
+    path: 'posts',
+    component: Posts,
+  },
+  {
+    path: 'subscription',
+    component: Subscription,
   },
 ];

@@ -4,9 +4,11 @@ import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import {
   Channel,
   ChannelSchedule,
+  ChannelSource,
   ChannelStyle,
 } from '../models/channel.model';
 import { API } from '../constants/api.constants';
+import { TelegramService } from './telegram.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,23 +16,25 @@ import { API } from '../constants/api.constants';
 export class ChannelService {
   private channelsSubject = new BehaviorSubject<Channel[]>([]);
   private stylesById: { [key: number]: ChannelStyle } = {};
+  private scheduleById: { [key: number]: ChannelSchedule } = {};
+  private sourceById: { [key: number]: ChannelSource[] } = {};
+
   private stylesSubject = new BehaviorSubject<{ [key: number]: ChannelStyle }>(
     {}
   );
-  private scheduleById: { [key: number]: ChannelSchedule } = {};
   private scheduleSubject = new BehaviorSubject<{
     [key: number]: ChannelSchedule;
   }>({});
+  private sourceSubject = new BehaviorSubject<{
+    [key: number]: ChannelSource[];
+  }>({});
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private telegramService: TelegramService
+  ) {
     this.loadChannels();
   }
-
-  private mockChannelStyle: ChannelStyle = {
-    topic: '📚 Образование и саморазвитие',
-    styleTetx: 'Написать данный текст',
-    keyWords: ['лол', 'кек', 'приятный'],
-  };
 
   private mockChannels: Channel[] = [
     {
@@ -55,6 +59,12 @@ export class ChannelService {
     },
   ];
 
+  private mockChannelStyle: ChannelStyle = {
+    topic: '📚 Образование и саморазвитие',
+    styleTetx: 'Написать данный текст',
+    keyWords: ['лол', 'кек', 'приятный'],
+  };
+
   private mockChannelSchedule: ChannelSchedule = {
     posts: [
       { name: '1 пост', time: '10:00', date: '25.06' },
@@ -65,15 +75,39 @@ export class ChannelService {
     random: false,
   };
 
-  private loadChannels() {
-    setTimeout(() => {
-      this.channelsSubject.next(this.mockChannels);
-    }, 1500);
-    // this.http.get<Channel[]>(API.CHANNELSTYLE.GET_ALL).subscribe(data => {
-    //   this.channelsSubject.next(data);
-    // });
-    this.loadAllChannelStyles();
-    this.loadAllChannelSchedules();
+  private mockChannelSource: ChannelSource[] = [
+    {
+      name: 'Grok',
+      photo: '../../../assets/mock/grok.png',
+      link: 'https://grok',
+    },
+    {
+      name: 'Roblox wiki',
+      photo: '../../../assets/mock/pk.png',
+      link: 'https://roblox.fandom.com/wiki/Roblox',
+    },
+  ];
+
+  loadChannels() {
+    const telegramId = this.telegramService.getUser();
+
+    this.http
+      .get<Channel[]>(`/api/channels?telegramId=${telegramId}`)
+      .subscribe({
+        next: (channels) => {
+          this.channelsSubject.next(channels);
+          this.loadAllChannelStyles();
+          this.loadAllChannelSchedules();
+          this.loadAllChannelSources();
+        },
+        error: (err) => {
+          console.error('Ошибка при загрузке каналов:', err);
+          this.channelsSubject.next(this.mockChannels);
+          this.loadAllChannelStyles();
+          this.loadAllChannelSchedules();
+          this.loadAllChannelSources();
+        },
+      });
   }
 
   loadAllChannelStyles(): void {
@@ -85,16 +119,17 @@ export class ChannelService {
   }
 
   loadChannelStyle(id: number): void {
-    setTimeout(() => {
-      this.stylesById[id] = this.mockChannelStyle;
-      this.stylesSubject.next(this.stylesById);
-    }, 1500);
-    // this.http
-    //   .get<ChannelStyle>(API.CHANNELSTYLE.GET_CHANNEL_STYLE(id))
-    //   .subscribe((style) => {
-    //     this.stylesById[id] = style;
-    //     this.stylesSubject.next(this.stylesById);
-    //   });
+    this.http.get<ChannelStyle>(API.GET_CHANNEL_STYLE(id)).subscribe({
+      next: (style) => {
+        this.stylesById[id] = style;
+        this.stylesSubject.next(this.stylesById);
+      },
+      error: (err) => {
+        console.error(`Ошибка при загрузке стиля канала (id: ${id}):`, err);
+        this.stylesById[id] = this.mockChannelStyle;
+        this.stylesSubject.next(this.stylesById);
+      },
+    });
   }
 
   loadAllChannelSchedules() {
@@ -105,17 +140,49 @@ export class ChannelService {
     });
   }
 
-  loadChannelSchedule(id: number) {
-    setTimeout(() => {
-      this.scheduleById[id] = this.mockChannelSchedule;
-      this.scheduleSubject.next(this.scheduleById);
-    }, 1500);
-    // this.http
-    //   .get<ChannelSchedule>(API.CHANNELSTYLE.GET_CHANNEL_STYLE(id))
-    //   .subscribe((schedule) => {
-    //     this.scheduleById[id] = schedule;
-    //     this.scheduleSubject.next(this.scheduleById);
-    //   });
+  loadChannelSchedule(id: number): void {
+    this.http.get<ChannelSchedule>(API.GET_CHANNEL_SCHEDULE(id)).subscribe({
+      next: (schedule) => {
+        this.scheduleById[id] = schedule;
+        this.scheduleSubject.next(this.scheduleById);
+      },
+      error: (err) => {
+        console.error(
+          `Ошибка при загрузке расписания канала (id: ${id}):`,
+          err
+        );
+        this.scheduleById[id] = this.mockChannelSchedule;
+        this.scheduleSubject.next(this.scheduleById);
+      },
+    });
+  }
+
+  loadAllChannelSources(): void {
+    this.getChannels().subscribe((channels) => {
+      channels.forEach((channel) => {
+        this.loadChannelSources(channel.id);
+      });
+    });
+  }
+
+  loadChannelSources(id: number): void {
+    this.http.get<ChannelSource[]>(API.GET_CHANNEL_SOURCES(id)).subscribe({
+      next: (sources) => {
+        this.sourceById[id] = sources;
+        this.sourceSubject.next(this.sourceById);
+      },
+      error: (err) => {
+        console.error(
+          `Ошибка при загрузке источников канала (id: ${id}):`,
+          err
+        );
+        this.sourceById[id] = this.mockChannelSource.map((source) => ({
+          ...source,
+        }));
+
+        this.sourceSubject.next(this.sourceById);
+      },
+    });
   }
 
   getChannels(): Observable<Channel[]> {
@@ -132,8 +199,25 @@ export class ChannelService {
       .pipe(map((schedules) => schedules[id]));
   }
 
+  getChannelSources(id: number): Observable<ChannelSource[]> {
+    return this.sourceSubject.asObservable().pipe(
+      map((sources) => sources[id] ?? []) // теперь sources[id] — это массив
+    );
+  }
+
   updateChannelStyle(style: ChannelStyle, channelId: number) {
     this.stylesById[channelId] = style;
     this.stylesSubject.next(this.stylesById);
+  }
+
+  updateChannelSources(
+    channelId: number,
+    sources: ChannelSource[]
+  ): Observable<any> {
+    return this.http.put(API.UPDATE_CHANNEL_SOURCES(channelId), sources);
+  }
+
+  fetchSourceInfo(link: string): Observable<ChannelSource> {
+    return this.http.post<ChannelSource>(API.FETCH_CHANNEL_SOURCES, { link });
   }
 }

@@ -1,23 +1,109 @@
 .source-list {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+}
+
+.description {
+  background-color: #282828;
+  padding: 6px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+
+  &__title {
+    margin-bottom: 10px;
+  }
+
+  &__text {
+    padding: 10px;
+  }
 }
 
 .sources-item {
   display: flex;
   gap: 10px;
+  align-items: center;
 
   & > :last-child {
     margin-left: auto;
     margin-right: 10px;
   }
 
-  &__img {
-    height: 38px;
-    object-fit: contain;
+  .site-description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+
+  .site-description h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
   }
 
   .site-description__text {
     margin-top: 5px;
     color: #9b9b9b;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
   }
+}
+
+.sources-item__img {
+  height: 45px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.sources-edit {
+  &__title {
+    margin-left: 10px;
+    margin-bottom: 8px;
+  }
+
+  &__title2 {
+    margin-top: 15px;
+  }
+}
+
+.input {
+  padding: 12px 12px;
+  border-radius: 15px;
+  background-color: black;
+  font-size: 14px;
+  width: calc(100% - 24px);
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.buttons app-button {
+  flex: 1;
+}
+
+.new-source-form {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 20px;
+  background-color: #282828;
+  max-width: 500px;
+  margin-bottom: 60px;
+
+  &__title {
+    margin-top: 20px;
+  }
+
+  &__buttons {
+    margin-top: 20px;
+  }
+}
+
+.botton {
+  margin-bottom: 60px;
 }

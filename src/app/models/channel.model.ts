@@ -34,3 +34,9 @@ export interface ChannelSchedule {
   duplication: boolean;
   random: boolean;
 }
+
+export interface ChannelSource {
+  name: string;
+  photo: string;
+  link: string;
+}
